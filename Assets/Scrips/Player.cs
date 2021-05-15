@@ -12,13 +12,22 @@ public class Player : MonoBehaviour
     private GameObject _specialWeaponPrefab;    
     [SerializeField]
     private float _fireRate = 0.15f;
-    
     private float _canFire = -1f;
+    [SerializeField]
+    private int _lives = 3;
+
+    private SpawnManager _spawnManager;
+
     // Start is called before the first frame update
     void Start()
     {
         //set current position to new position (0, 0, 0)
         transform.position = new Vector3(0, 0, 0);
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        if (_spawnManager == null)
+        {
+            Debug.LogError("The Spawn Manager is NULL");
+        }
     }
 
     // Update is called once per frame
@@ -76,5 +85,15 @@ public class Player : MonoBehaviour
     void FireSpecialWeapon()
     {
         Instantiate(_specialWeaponPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+    }
+    
+    public void Damage()
+    {
+        _lives -= 1;
+        if (_lives < 1)
+        {
+            _spawnManager.onPlayerDeath();
+            Destroy(this.gameObject);
+        }
     }
 }
