@@ -8,6 +8,15 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 4.0f;
+    [SerializeField]
+    private GameObject _laserSouthPrefab;
+    [SerializeField]
+    private GameObject _laserSouthWestPrefab;
+    [SerializeField]
+    private GameObject _laserSouthEastPrefab;
+    [SerializeField]
+    private float _fireRate = 0.5f;
+    private float _canFire = -1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +32,11 @@ public class Enemy : MonoBehaviour
         {
             float randomX = Random.Range(-8f, 8f);
             transform.position = new Vector3(randomX, 7, 0);
+        }
+        
+        if (Time.time > _canFire)
+        {
+            FireLaser();
         }
     }
 
@@ -41,5 +55,13 @@ public class Enemy : MonoBehaviour
             Destroy(other.gameObject);
             Destroy(this.gameObject);
         }
+    }
+    
+    void FireLaser()
+    {
+        _canFire = Time.time + _fireRate;
+        Instantiate(_laserSouthEastPrefab, transform.position + new Vector3(-0.3f, -0.8f, 0), Quaternion.identity);
+        Instantiate(_laserSouthPrefab, transform.position + new Vector3(0, -0.8f, 0), Quaternion.identity);
+        Instantiate(_laserSouthWestPrefab, transform.position + new Vector3(0.3f, -0.8f, 0), Quaternion.identity);
     }
 }
