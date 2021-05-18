@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3.5f;
+
+    private float _speedMultiplier = 2.0f; 
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -21,8 +23,8 @@ public class Player : MonoBehaviour
 
     private SpawnManager _spawnManager;
     
-    [SerializeField]
     private bool _isTripleShotActive = false;
+    private bool _isSpeedBoostActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -59,8 +61,8 @@ public class Player : MonoBehaviour
         //transform.Translate(Vector3.right * horizontalInput * _speed * Time.deltaTime);
         //transform.Translate(Vector3.up * vertivalInput * _speed * Time.deltaTime);
         
-        transform.Translate(new Vector3(horizontalInput, vertivalInput, 0) * _speed * Time.deltaTime);
-
+        transform.Translate(new Vector3(horizontalInput, vertivalInput, 0) * _speed * _speedMultiplier * Time.deltaTime);
+        
         // if (transform.position.y > 0)
         // {
         //     transform.position = new Vector3(transform.position.x, 0, 0);
@@ -123,4 +125,18 @@ public class Player : MonoBehaviour
         this._isTripleShotActive = false;
 
     }
+
+    public void SpeedBoostActive()
+    {
+        this._isSpeedBoostActive = true;
+        _speed *= _speedMultiplier;
+        StartCoroutine(SpeedBoostPowerDownRoutine());
+    }
+    
+    IEnumerator SpeedBoostPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _speed /= _speedMultiplier;
+        this._isSpeedBoostActive = false;
+    }    
 }
