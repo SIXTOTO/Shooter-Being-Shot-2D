@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,6 +10,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
+    private GameObject _tripleShotPrefab;
+    [SerializeField]
     private GameObject _specialWeaponPrefab;    
     [SerializeField]
     private float _fireRate = 0.15f;
@@ -17,6 +20,9 @@ public class Player : MonoBehaviour
     private int _lives = 3;
 
     private SpawnManager _spawnManager;
+    
+    [SerializeField]
+    private bool _isTripleShotActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -77,9 +83,17 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         _canFire = Time.time + _fireRate;
-        Instantiate(_laserPrefab, transform.position + new Vector3(-0.21f, 1.35f, 0), Quaternion.identity);
-        Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
-        Instantiate(_laserPrefab, transform.position + new Vector3(0.21f, 1.35f, 0), Quaternion.identity);
+        if (_isTripleShotActive)
+        {
+            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity); 
+        }
+        //Instantiate(_laserPrefab, transform.position + new Vector3(-0.21f, 1.35f, 0), Quaternion.identity);
+        //Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
+        //Instantiate(_laserPrefab, transform.position + new Vector3(0.21f, 1.35f, 0), Quaternion.identity);
     }
 
     void FireSpecialWeapon()
@@ -95,5 +109,18 @@ public class Player : MonoBehaviour
             _spawnManager.onPlayerDeath();
             Destroy(this.gameObject);
         }
+    }
+
+    public void TripleShotActive()
+    {
+        this._isTripleShotActive = true;
+        StartCoroutine(TripleShotPowerDownRoutine());
+    }
+
+    IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        this._isTripleShotActive = false;
+
     }
 }
