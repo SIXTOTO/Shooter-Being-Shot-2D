@@ -46,11 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff603e5221a73d84191e7d6713bff28d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 4
+  _speed: 2
   _laserSouthPrefab: {fileID: 306658436554168348, guid: 3c4486b7285eb0a468f8f80892b2785c, type: 3}
   _laserSouthWestPrefab: {fileID: 306658436554168348, guid: 1bcfb36d48dcf8647b2f640be213fbbc, type: 3}
   _laserSouthEastPrefab: {fileID: 306658436554168348, guid: 8000a4326a6151a48af0ca6015c0e829, type: 3}
-  _fireRate: 0.15
+  _fireRate: 1.5
 --- !u!212 &3512692935706436375
 SpriteRenderer:
   m_ObjectHideFlags: 0

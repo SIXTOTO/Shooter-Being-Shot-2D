@@ -127,4 +127,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a8ef008ffb6c2d498722f9fd5154c17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 9.46
+  _enemyLaserSouthSpeed: 3

@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 4.0f;
+    private float _speed = 2.0f;
     [SerializeField]
     private GameObject _laserSouthPrefab;
     [SerializeField]
@@ -15,12 +15,14 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private GameObject _laserSouthEastPrefab;
     [SerializeField]
-    private float _fireRate = 0.5f;
+    private float _fireRate = 1.5f;  //wait for how long before next fire
     private float _canFire = -1f;
+
+    private Player _player;
     // Start is called before the first frame update
     void Start()
     {
-        
+        _player = GameObject.Find("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -53,6 +55,10 @@ public class Enemy : MonoBehaviour
         }else if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
+            if (_player != null)
+            {
+                _player.AddScore(100);
+            }
             Destroy(this.gameObject);
         }
     }
@@ -60,8 +66,12 @@ public class Enemy : MonoBehaviour
     void FireLaser()
     {
         _canFire = Time.time + _fireRate;
-        Instantiate(_laserSouthEastPrefab, transform.position + new Vector3(-0.3f, -0.8f, 0), Quaternion.identity);
+        if (_laserSouthEastPrefab != null && _laserSouthWestPrefab !=null)
+        {
+            Instantiate(_laserSouthEastPrefab, transform.position + new Vector3(-0.3f, -0.8f, 0), Quaternion.identity);
+            Instantiate(_laserSouthWestPrefab, transform.position + new Vector3(0.3f, -0.8f, 0), Quaternion.identity);
+        }
         Instantiate(_laserSouthPrefab, transform.position + new Vector3(0, -0.8f, 0), Quaternion.identity);
-        Instantiate(_laserSouthWestPrefab, transform.position + new Vector3(0.3f, -0.8f, 0), Quaternion.identity);
+        
     }
 }

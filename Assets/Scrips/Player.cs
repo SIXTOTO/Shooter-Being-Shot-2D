@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -28,6 +29,10 @@ public class Player : MonoBehaviour
     private bool _isShieldsActive = false;
     [SerializeField]
     private GameObject _shieldVisualizer;
+    [SerializeField]
+    private int _score;
+
+    private UIManager _uiManager;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +43,12 @@ public class Player : MonoBehaviour
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is NULL");
+        }
+
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if (_uiManager == null)
+        {
+            Debug.LogError("The UI Manager is NULL.");
         }
     }
 
@@ -116,6 +127,7 @@ public class Player : MonoBehaviour
         }
         
         _lives -= 1;
+        _uiManager.UpdateLives(_lives);
         if (_lives < 1)
         {
             _spawnManager.onPlayerDeath();
@@ -155,4 +167,12 @@ public class Player : MonoBehaviour
         this._isShieldsActive = true;
         _shieldVisualizer.SetActive(true);
     }
+
+    public void AddScore(int point)
+    {
+        _score += point;
+        _uiManager.UpdateScore(_score);
+    }
+    
+    
 }
