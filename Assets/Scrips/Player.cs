@@ -119,11 +119,16 @@ public class Player : MonoBehaviour
         _canFire = Time.time + _fireRate;
         if (_isTripleShotActive)
         {
-            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+            GameObject tripleShotLaserInstantiated = Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+            for (int i = 0; i < tripleShotLaserInstantiated.transform.childCount; i++)
+            {
+                tripleShotLaserInstantiated.transform.GetChild(i).gameObject.GetComponent<Laser>().setDirection(1);
+            }
         }
         else
         {
-            Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity); 
+            GameObject playerLaserInstantiated = Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.25f, 0), Quaternion.identity);
+            playerLaserInstantiated.GetComponent<Laser>().setDirection(1);
         }
         _audioSource.Play();
         //Instantiate(_laserPrefab, transform.position + new Vector3(-0.21f, 1.35f, 0), Quaternion.identity);

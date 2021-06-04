@@ -87,6 +87,7 @@ public class Enemy : MonoBehaviour
             _canFire = float.MaxValue;
             _speed = 0;
             _audioSource.Play();
+            Destroy(this.GetComponent<BoxCollider2D>());
             Destroy(this.gameObject, 2.6f);
         }
     }
